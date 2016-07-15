@@ -1,0 +1,9 @@
+option java_package = "com.restapp.scala.proto";
+
+message HelloRequest {
+   required string username = 1;
+}
+
+message HelloResponse {
+   required string message = 1;
+}
