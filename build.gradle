@@ -31,11 +31,12 @@ protobuf {
     protoc {
         artifact = 'com.google.protobuf:protoc:2.6.1'
     }
+
+    generatedFilesBaseDir = "$projectDir/src"
 }
 
-idea {
-    module {
-        sourceDirs += file("${protobuf.generatedFilesBaseDir}/main/java");
-    }
+task cleanProtos(type: Delete) << {
+   delete "$projectDir/src/main/java/proto"
 }
 
+task cleanAll(dependsOn:[cleanProtos, clean])

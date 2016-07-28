@@ -1,0 +1,11 @@
+option java_package = "proto.hello.v2";
+
+message HelloRequestV2 {
+    required string firstName = 1;
+    required string middleName = 2;
+    required string lastNameName = 3;
+}
+
+message HelloResponseV2 {
+    required string message = 1;
+}

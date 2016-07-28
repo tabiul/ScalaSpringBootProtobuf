@@ -1,4 +1,5 @@
-import com.restapp.scala.proto.Hello.{HelloRequest, HelloResponse}
+import com.restapp.proto.v1.Hello.{HelloRequestV1, HelloResponseV1}
+import com.restapp.proto.v2.Hello.{HelloRequestV2, HelloResponseV2}
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,15 +33,27 @@ class MainAppTest {
   private val restTemplate: RestTemplate = null
 
   @Test
-  def test() = {
-    val requestBuilder = HelloRequest.newBuilder()
-    val request = requestBuilder.setUsername("tabiul").build()
+  def testV1() = {
+    val requestBuilder = HelloRequestV1.newBuilder()
+    val request = requestBuilder.setUserName("tabiul").build()
     val headers = new HttpHeaders()
     headers.setContentType(ProtobufHttpMessageConverter.PROTOBUF)
     headers.setContentLength(request.toByteArray.length)
     val helloRequest = new HttpEntity[Array[Byte]](requestBuilder.build().toByteArray, headers)
-    val response = restTemplate.postForObject("http://localhost:8080/hello", helloRequest, classOf[HelloResponse])
-    assertEquals("Hello tabiul", response.getMessage)
+    val response = restTemplate.postForObject("http://localhost:8080/v1/hello", helloRequest, classOf[HelloResponseV1])
+    assertEquals("hello tabiul", response.getMessage)
+  }
+
+  @Test
+  def testV2() = {
+    val requestBuilder = HelloRequestV2.newBuilder()
+    val request = requestBuilder.setFirstName("Adel").setMiddleName("Eskandar").setLastNameName("Mahmood").build()
+    val headers = new HttpHeaders()
+    headers.setContentType(ProtobufHttpMessageConverter.PROTOBUF)
+    headers.setContentLength(request.toByteArray.length)
+    val helloRequest = new HttpEntity[Array[Byte]](requestBuilder.build().toByteArray, headers)
+    val response = restTemplate.postForObject("http://localhost:8080/v2/hello", helloRequest, classOf[HelloResponseV2])
+    assertEquals("hello Adel Eskandar Mahmood", response.getMessage)
   }
 }
 
