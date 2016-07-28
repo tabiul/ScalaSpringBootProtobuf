@@ -31,11 +31,23 @@ protobuf {
     protoc {
         artifact = 'com.google.protobuf:protoc:2.6.1'
     }
-
+    generateProtoTasks {
+        ofSourceSet('main').each{task ->
+             task.generateDescriptorSet = true
+             task.descriptorSetOptions.includeImports = true
+             task.descriptorSetOptions.includeSourceInfo = true
+             //task.descriptorSetOptions.path = "$projectDir/src/main/proto"
+//            task.builtins {
+//                descriptor_set{
+//                    option
+//                }
+//            }
+        }
+    }
     generatedFilesBaseDir = "$projectDir/src"
 }
 
-task cleanProtos(type: Delete) << {
+task cleanProtos(type: Delete){
    delete "$projectDir/src/main/java/proto"
 }
 
